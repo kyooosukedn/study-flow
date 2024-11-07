@@ -5,21 +5,25 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthService } from './services/auth.service';
-import { AppComponent } from '../app.component';
+import { LoginComponent } from './components/login/login.component';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    LoginComponent
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
-    BrowserModule
+    BrowserModule,
+    RouterModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthService,
     provideHttpClient(withInterceptorsFromDi())
   ],
-  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AuthModule { }
