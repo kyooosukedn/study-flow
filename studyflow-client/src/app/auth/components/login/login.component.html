@@ -1,60 +1,71 @@
-<div class="container">
-    <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <h2 class="text-center mb-4">Welcome to StudyFlow</h2>
-      
-      <!-- Error Alert -->
-      <div class="alert alert-danger" *ngIf="error">
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <h2>Welcome to StudyFlow</h2>
+    
+    @if (error) {
+      <div class="alert alert-danger">
         {{ error }}
       </div>
-  
-      <!-- Email Field -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          type="email" 
-          id="email"
-          class="form-control" 
-          formControlName="email"
-          [class.is-invalid]="email?.invalid && email?.touched"
-          placeholder="Enter your email">
-        
-        <!-- Email Validation Messages -->
-        <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
-          <span *ngIf="email?.errors?.['required']">Email is required</span>
-          <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+    }
+
+    <!-- Email Field -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        class="form-control"
+        [class.is-invalid]="email?.invalid && email?.touched"
+        placeholder="Enter your email">
+      
+      @if (email?.invalid && email?.touched) {
+        <div class="invalid-feedback">
+          @if (email?.errors?.['required']) {
+            <span>Email is required</span>
+          }
+          @if (email?.errors?.['email']) {
+            <span>Please enter a valid email</span>
+          }
         </div>
-      </div>
-  
-      <!-- Password Field -->
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password"
-          class="form-control" 
-          formControlName="password"
-          [class.is-invalid]="password?.invalid && password?.touched"
-          placeholder="Enter your password">
-        
-        <!-- Password Validation Messages -->
-        <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
-          <span *ngIf="password?.errors?.['required']">Password is required</span>
-          <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+      }
+    </div>
+
+    <!-- Password Field -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        formControlName="password" 
+        class="form-control"
+        [class.is-invalid]="password?.invalid && password?.touched"
+        placeholder="Enter your password">
+      
+      @if (password?.invalid && password?.touched) {
+        <div class="invalid-feedback">
+          @if (password?.errors?.['required']) {
+            <span>Password is required</span>
+          }
+          @if (password?.errors?.['minlength']) {
+            <span>Password must be at least 6 characters</span>
+          }
         </div>
-      </div>
-  
-      <!-- Login Button -->
-      <button 
-        type="submit" 
-        class="btn btn-primary w-100" 
-        [disabled]="loginForm.invalid || isLoading">
-        {{ isLoading ? 'Logging in...' : 'Login' }}
-      </button>
-  
-      <!-- Register Link -->
-      <p class="text-center mt-3">
-        Don't have an account? 
-        <a routerLink="/auth/register">Register here</a>
-      </p>
-    </form>
-  </div>
+      }
+    </div>
+
+    <!-- Submit Button -->
+    <button 
+      type="submit" 
+      class="btn btn-primary w-100" 
+      [disabled]="loginForm.invalid || isLoading">
+      {{ isLoading ? 'Logging in...' : 'Login' }}
+    </button>
+
+    <!-- Register Link -->
+    <p class="text-center mt-3">
+      Don't have an account? 
+      <a routerLink="/auth/register">Register here</a>
+    </p>
+  </form>
+</div>

@@ -1,75 +1,67 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent {
+  loginForm: FormGroup;
   
-  loginForm: FormGroup | undefined;
   isLoading = false;
-  error : string | null = null;
-
+  error: string | null = null;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
-    this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
-    })
-  }
-  ngOnInit(): void {
-    if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
   }
 
-  // getter methods
-  get email() {
-    return this.loginForm?.get('email');
-  }
+  // Getters for easy access in template
+  get email() { return this.loginForm.get('email'); }
+  get password() { return this.loginForm.get('password'); }
 
-  get password() {
-    return this.loginForm?.get('password');
-  }
-
-  onSubmit() :void {
-    // if form is invalid, show validation errors
-    if (this.loginForm?.invalid) {
-      Object.keys(this.loginForm.controls).forEach(key => {
-        const control = this.loginForm?.get(key);
-        if (control?.invalid) {
-          control.markAsTouched();
-        }
-      })
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
       return;
     }
-    
+
     this.isLoading = true;
     this.error = null;
 
-    const { email, password } = this.loginForm?.value;
+    const { email, password } = this.loginForm.value;
 
-    this.authService.login(email, password).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: (error) => {
-        this.error = error;
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    })
+    // For now, just log the values
+    console.log('Login attempt:', { email, password });
+    
+    // TODO: Implement actual login when backend is ready
+    // this.authService.login(email, password)
+    //   .subscribe({
+    //     next: () => {
+    //       this.router.navigate(['/dashboard']);
+    //     },
+    //     error: (error) => {
+    //       this.error = error.error?.message || 'An error occurred during login';
+    //       this.isLoading = false;
+    //     },
+    //     complete: () => {
+    //       this.isLoading = false;
+    //     }
+    //   });
   }
 }
