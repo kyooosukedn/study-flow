@@ -32,6 +32,16 @@ export const routes: Routes = [
         path: 'timer',
         loadComponent: () => import('./features/dashboard/components/study-timer/study-timer.component')
           .then(m => m.StudyTimerComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./features/profile/profile.component')
+          .then(m => m.ProfileComponent)
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./features/settings.component')
+          .then(m => m.SettingsComponent)
       }
     ]
   },
