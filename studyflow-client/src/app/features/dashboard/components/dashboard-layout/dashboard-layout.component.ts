@@ -73,6 +73,7 @@ import { MatBadgeModule } from '@angular/material/badge';
           <span>Logout</span>
         </button>
       </mat-menu>
+      
 
       <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #drawer mode="side" opened class="sidenav">
